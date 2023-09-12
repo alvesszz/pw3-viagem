@@ -3,10 +3,7 @@ package br.com.etechoracio.pw3viagens.Controller;
 import br.com.etechoracio.pw3viagens.Entity.Viagem;
 import br.com.etechoracio.pw3viagens.Repository.ViagensRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,4 +26,19 @@ public class ViagemController {
         return repository.findById(id);
     }
 
+    @PostMapping
+    public Viagem inserir(@RequestBody Viagem body)
+    {
+        Viagem inserida = repository.save(body);
+        return inserida;
+    }
+
+    @PutMapping("/{id}")
+    public Viagem atualizar (@PathVariable Long id,
+                             @RequestBody Viagem obj) {
+        Optional<Viagem> existe = buscarporId(id);
+        if (existe.isPresent())
+            repository.save(obj);
+        return obj;
+    }
 }
